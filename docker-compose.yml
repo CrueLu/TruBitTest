@@ -1,0 +1,41 @@
+version: '2'
+services:
+  node1:
+    environment:
+      - NAME=1
+      - HOST=0.0.0.0
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+    - "9898:9898"
+    volumes:
+    - ./:/TruBit
+  node2:
+    environment:      
+      - HOST=0.0.0.0
+      - NAME=2
+      - PEERS=http://node1:9898      
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+    - "9899:9898"
+    volumes:
+    - ./:/TruBit
+    links:
+      - node1:node1
+  node3:
+    environment:
+      - HOST=0.0.0.0
+      - NAME=3
+      - PEERS=http://node2:9898      
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+    - "9897:9898"
+    volumes:
+    - ./:/TruBit
+    links:
+      - node2:node2
